@@ -1,0 +1,32 @@
+{
+    "manifest_version": 2,
+    "permissions": [ "<all_urls>", "storage", "tabs", "webRequest", "webRequestBlocking", "background" ],
+    "content_scripts": [ {
+        "exclude_globs":    [  ],
+        "include_globs":    [ "*" ],
+        "js":               [ "showlibs.user.js" ],
+        "matches":          ["http://*/*", "https://*/*"],
+        "run_at": "document_start"
+    } ],
+    "background": {
+        "scripts": ["background.js"],
+        "persistent" : true
+    },
+    "converted_from_user_script": true,
+    "description":  "Para Multimedia",
+    "name":         "carga libs",
+    "web_accessible_resources": ["inject.js"] ,
+    "version":      "1",
+    "browser_action": {
+        "permissions": [ "storage", "activeTab", "http://*/*", "https://*/*" ],
+        "default_popup": "popup.html",
+        "default_icon": {
+            "16": "if_finderx16.png",
+            "48": "if_finderx48.png"
+        }
+    },
+    "icons": {
+        "16": "if_finderx16.png",
+        "48": "if_finderx48.png"
+    }
+}

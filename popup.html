@@ -1,0 +1,83 @@
+<style type="text/css">
+	body {background-color: beige;}
+</style>
+
+
+<div style="width: 350px;font-size: 1.2em;font-family: monospace;">
+	<ul>
+		<li>
+			<label for="tplib">tplib : </label>
+			<input type="checkbox" name= "tplib" id="tplib">
+		</li>
+		<li>mm_base
+		<ul>
+			<li><input type='radio' name='base' value=''></li>
+			<li><input type='radio' name='base' value='int'> integracion</li>
+			<li><input type='radio' name='base' value='loc'> local</li>
+			<li><input type='radio' name='base' value='pro'> produccion</li>
+			<li>
+				<input type='radio' name='base' id='baseStrRadio' value=''>
+				<input type="text" id="baseStrInput">
+			</li>
+		</ul>
+		</li>
+		<li>
+			<label for="comunjs">comunjs to local : </label>
+			<input type="checkbox" name= "comunjs" id="comunjs">
+		</li>
+	</ul>
+
+	<button onclick="guardar()">Guardar Variables</button>
+</div>
+
+<script type="text/javascript">
+
+	function guardar(){
+		var tmp  = document.getElementById('baseStrRadio');
+		var tmp1 = document.getElementById('baseStrInput');
+		tmp.value = tmp1.value;
+
+
+
+		var tplib = document.getElementById('tplib');
+		var mmBase = document.querySelector('input[name="base"]:checked').value;
+		var comunjs = document.getElementById('comunjs');
+		chrome.storage.sync.set({ "tplib": tplib.checked, "mm_base": mmBase, "comunjs": comunjs.checked }, function(){
+			chrome.tabs.getSelected(null, function(tab) {
+	  			var code = 'window.location.reload();';
+	  			chrome.tabs.executeScript(tab.id, {code: code});
+			});
+		});
+	}
+	
+
+	chrome.storage.sync.get(["tplib", "mm_base", "comunjs"], function(items){
+		var tplib = document.getElementById('tplib');
+		var comunjs = document.getElementById('comunjs');
+		//var mmBase = document.getElementById('mm_base');
+		tplib.checked = items.tplib;
+		comunjs.checked = items.comunjs;
+
+		var lis = document.getElementsByName('base');
+		switch (items.mm_base) {
+			case '':
+				lis[0].checked = true;
+				break;
+			case 'int':
+				lis[1].checked = true;
+				break;
+			case 'loc':
+				lis[2].checked = true;
+				break;
+			case 'pro':
+				lis[3].checked = true;
+				break;
+			default:
+				lis[4].checked = true;
+				var tmp = document.getElementById('baseStrInput');
+				tmp.value = items.mm_base;
+				break;
+		}
+	});
+
+</script>
